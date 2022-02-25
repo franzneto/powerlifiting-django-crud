@@ -3,7 +3,8 @@ from xml.etree.ElementInclude import include
 from django.urls import path, include
 from . import views
 
+app_name = 'pages'
+
 urlpatterns = [
-    path('', views.Home.as_view(), name='home'),
-    path('accounts/', include('allauth.urls')),
+    path('', views.HomePageView.as_view(), name='home'),
 ]
