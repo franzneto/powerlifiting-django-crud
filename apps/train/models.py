@@ -1,6 +1,7 @@
 from __future__ import annotations
 from django.db import models
 from django.conf import settings
+from datetime import date
 
 # Create your models here.
 
@@ -13,7 +14,7 @@ class Exercise(models.Model):
 class Train(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(default=date.today)
     repetitions = models.IntegerField()
     weight = models.IntegerField()
 

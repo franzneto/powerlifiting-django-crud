@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+ 
+{% block title %} Add Train {% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class='btn  btn-dark' type="submit" value="Submit">
+</form>
+
+{% else %}
+
+<p>Please login to add train</p>
+
+{% endif %}
+
+{% endblock %}
