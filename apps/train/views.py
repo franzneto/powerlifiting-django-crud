@@ -5,7 +5,7 @@ from .forms import TrainForm
 
 # Create your views here.
 
-def add_train(request):
+def create_train(request):
     
     if request.method == 'POST':
         form = TrainForm(request.POST)
@@ -15,8 +15,8 @@ def add_train(request):
             form.save()
             return redirect('/')
         else:
-            return render(request, 'train/add_train.html', {'form': form})
+            return render(request, 'train/create_train.html', {'form': form})
     elif request.method == 'GET':
         form = TrainForm()
-        return render(request, 'train/add_train.html', {'form': form})
+        return render(request, 'train/create_train.html', {'form': form})
 

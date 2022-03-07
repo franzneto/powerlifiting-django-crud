@@ -8,5 +8,5 @@ app_name = 'pages'
 
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
-    path('train/add/', add_train, name='add_train'),
+    path('train/create/', create_train, name='create_train'),
 ]
