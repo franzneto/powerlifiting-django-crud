@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+ 
+{% block title %} Read Trains {% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h1>Logs</h1>
+<br>
+
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Exercise</th>
+          <th scope="col">Weight</th>
+          <th scope="col">Repetitions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for train in trains %}
+        <tr>
+          <th scope="row">{{ train.date|date:"m/d/y" }}</th>
+          <td>{{ train.exercise }}</td>
+          <td>{{ train.weight }}</td>
+          <td>{{ train.repetitions }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+{% else %}
+
+<p>Please login to read the trains</p>
+
+{% endif %}
+
+{% endblock %}
