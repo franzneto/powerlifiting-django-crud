@@ -11,4 +11,5 @@ urlpatterns = [
     path('train/create/', create_train, name='create_train'),
     path('train/read/', ReadTrain.as_view(), name='read_train'),
     path('train/delete/<int:pk>/', delete_train, name='delete_train'),
+    path('train/update/<int:pk>/', update_train, name='update_train'),
 ]

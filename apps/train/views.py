@@ -41,3 +41,23 @@ def delete_train(request, pk):
         return redirect('/train/read')
     else:
         return redirect('/')
+
+def update_train(request, pk):
+    if User.is_authenticated:
+        train = Train.objects.get(pk=pk)
+        verifie_if_user_is_owner = train.user == request.user
+        if verifie_if_user_is_owner:
+            if request.method == 'POST':
+                form = TrainForm(request.POST, instance=train)
+                if form.is_valid():
+                    form.save()
+                    return redirect('/train/read')
+                else:
+                    return render(request, 'train/update_train.html', {'form': form})
+            elif request.method == 'GET':
+                form = TrainForm(instance=train)
+                return render(request, 'train/update_train.html', {'form': form})
+        else:
+            return redirect('/train/read')
+    else:
+        return redirect('/')
