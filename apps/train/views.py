@@ -38,6 +38,6 @@ def delete_train(request, pk):
     if User.is_authenticated:
         if verifie_if_user_is_owner:
             train.delete()
-        return redirect('/')
+        return redirect('/train/read')
     else:
         return redirect('/')
