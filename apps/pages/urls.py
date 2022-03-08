@@ -10,4 +10,5 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
     path('train/create/', create_train, name='create_train'),
     path('train/read/', ReadTrain.as_view(), name='read_train'),
+    path('train/delete/<int:pk>/', delete_train, name='delete_train'),
 ]

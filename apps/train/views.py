@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from .forms import TrainForm
 from .models import Train
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -26,3 +27,12 @@ class ReadTrain(ListView):
     template_name = 'train/read_train.html'
     context_object_name = 'trains'
     paginate_by = 5
+
+def delete_train(request, pk):
+    train = Train.objects.get(pk=pk)
+    if User.is_authenticated:
+        if Train.user == request.user:
+            train.delete()
+        return redirect('/')
+    else:
+        return redirect('/')
