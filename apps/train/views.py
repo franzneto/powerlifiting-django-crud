@@ -16,7 +16,7 @@ def create_train(request):
         form.instance.user = user
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('/train/read')
         else:
             return render(request, 'train/create_train.html', {'form': form})
     elif request.method == 'GET':
