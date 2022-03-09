@@ -17,6 +17,13 @@ class Train(models.Model):
     date = models.DateField(default=date.today)
     repetitions = models.IntegerField()
     weight = models.IntegerField()
+    tonnage = models.IntegerField(blank=True, null=True, default=None)
+
+    def calc_tonnage(self):
+        self.tonnage = self.weight * self.repetitions
+    
+    def set_user(self, user):
+        self.user = user
 
     def __str__(self):
         return f"{self.exercise} - {self.weight} - {self.date.strftime('%d/%m/%Y')}"
