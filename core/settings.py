@@ -48,7 +48,6 @@ INSTALLED_APPS = [
 
     #
     'apps.train',
-    'apps.pages',
 
     # 3rd party
     'allauth',

@@ -18,7 +18,7 @@ def create_train(request):
             form.instance.set_user(request.user) #link the user to the train
             form.instance.calc_tonnage() # set the tonnage
             form.save()
-            return redirect('/train/read')
+            return redirect('/')
         else:
             return render(request, 'train/create_train.html', {'form': form})
     elif request.method == 'GET':
@@ -40,7 +40,7 @@ def delete_train(request, pk):
     if User.is_authenticated:
         if verifie_if_user_is_owner:
             train.delete()
-        return redirect('/train/read')
+        return redirect('/')
     else:
         return redirect('/')
 
@@ -56,13 +56,14 @@ def update_train(request, pk):
                 if form.is_valid():
                     form.instance.calc_tonnage() # set the tonnage
                     form.save()
-                    return redirect('/train/read')
+                    return redirect('/')
                 else:
                     return render(request, 'train/update_train.html', {'form': form})
             elif request.method == 'GET':
                 form = TrainForm(instance=train)
                 return render(request, 'train/update_train.html', {'form': form})
         else:
-            return redirect('/train/read')
+            return redirect('/')
     else:
         return redirect('/')
+

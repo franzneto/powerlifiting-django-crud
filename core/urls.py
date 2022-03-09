@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from apps.train.views import *
 
-
+app_name = 'train'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.pages.urls', namespace='pages')),
     path('accounts/', include('allauth.urls')),
+    path('train/create/', create_train, name='create_train'),
+    path('', ReadTrain.as_view(), name='read_train'),
+    path('train/delete/<int:pk>/', delete_train, name='delete_train'),
+    path('train/update/<int:pk>/', update_train, name='update_train'),
 ]
