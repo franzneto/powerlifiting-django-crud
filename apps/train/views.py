@@ -8,13 +8,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
+
+
 def create_train(request):
     
     if request.method == 'POST':
         form = TrainForm(request.POST)
-        user = request.user
-        form.instance.user = user
         if form.is_valid():
+            form.instance.set_user(request.user) #link the user to the train
+            form.instance.calc_tonnage() # set the tonnage
             form.save()
             return redirect('/train/read')
         else:
@@ -44,12 +46,15 @@ def delete_train(request, pk):
 
 def update_train(request, pk):
     if User.is_authenticated:
+
         train = Train.objects.get(pk=pk)
         verifie_if_user_is_owner = train.user == request.user
+
         if verifie_if_user_is_owner:
             if request.method == 'POST':
                 form = TrainForm(request.POST, instance=train)
                 if form.is_valid():
+                    form.instance.calc_tonnage() # set the tonnage
                     form.save()
                     return redirect('/train/read')
                 else:
