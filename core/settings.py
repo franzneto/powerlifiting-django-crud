@@ -14,6 +14,7 @@ from pathlib import Path
 from telnetlib import AUTHENTICATION
 from decouple import config
 import os, sys
+import django_on_heroku
 
 # Apps in the project
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -160,3 +161,5 @@ ACCOUNT_UNIQUE_EMAIL = True
 # django crispy forms
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+django_on_heroku.settings(locals())
