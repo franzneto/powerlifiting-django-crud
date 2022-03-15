@@ -11,10 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from telnetlib import AUTHENTICATION
-from decouple import config
 import os, sys
-import django_on_heroku
+import django_heroku
 
 # Apps in the project
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -28,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = str(os.environ.get("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = str(os.environ.get("DEBUG"))
 
 ALLOWED_HOSTS = []
 
@@ -89,17 +87,24 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': '',
+if DEBUG == "False":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": str(os.environ.get("DB_NAME")),
+            "USER": str(os.environ.get("DB_USER")),
+            "PASSWORD": str(os.environ.get("DB_PASSWORD")),
+            "HOST": str(os.environ.get("DB_HOST")),
+            "PORT": "",
+        }
     }
-}
-
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -162,4 +167,5 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-django_on_heroku.settings(locals())
+# Activate Django-Heroku.
+django_heroku.settings(locals())
