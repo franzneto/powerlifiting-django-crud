@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class TrainConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.train'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.train"
