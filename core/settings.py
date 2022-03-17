@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os, sys
 import django_heroku
+from dotenv import load_dotenv
 
 # Apps in the project
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -29,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.environ.get("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get("DEBUG"))
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -87,7 +88,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if DEBUG == "False":
+if DEBUG == "True":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -169,3 +170,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+load_dotenv()  # take environment variables from .env.

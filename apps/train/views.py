@@ -1,6 +1,8 @@
+
 from django.views.generic.list import ListView
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.http import HttpResponseForbidden
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from .forms import TrainForm
 from .models import Train
 from django.contrib.auth.models import User
@@ -35,17 +37,6 @@ class ReadTrain(LoginRequiredMixin, ListView):
         return Train.objects.filter(user=self.request.user).order_by("-date")
 
 
-def delete_train(request, pk):
-    train = Train.objects.get(pk=pk)
-    verifie_if_user_is_owner = train.user == request.user
-    if User.is_authenticated:
-        if verifie_if_user_is_owner:
-            train.delete()
-        return redirect("/")
-    else:
-        return redirect("/")
-
-
 def update_train(request, pk):
     if User.is_authenticated:
 
@@ -68,3 +59,18 @@ def update_train(request, pk):
             return redirect("/")
     else:
         return redirect("/")
+
+
+def delete_train(request, pk):
+    if User.is_authenticated:
+        if Train.objects.filter(pk=pk).exists(): # check if the train exists
+            if request.user == Train.objects.get(pk=pk).user: 
+                train = Train.objects.get(pk=pk) # get the train
+                return train.user == request.user # verifie if the user is the owner of the train
+            raise PermissionDenied("Permission denied")
+        else:
+            raise ObjectDoesNotExist("The train does not exist")
+    raise PermissionDenied("Permission denied")
+
+
+
