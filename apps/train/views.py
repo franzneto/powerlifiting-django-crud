@@ -44,8 +44,9 @@ class TrainUpdateView(LoginRequiredMixin, UpdateView):
 
 class TrainDeleteView(LoginRequiredMixin, DeleteView):
     model = Train
-    template_name = "train/read_train.html"
+    template_name = "train/delete_train.html"
     success_url = "/"
+    pk_url_kwarg = "pk"
 
     def get_object(self, queryset=None):
         obj = super(TrainDeleteView, self).get_object()

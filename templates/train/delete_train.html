@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="." method="POST"> {% csrf_token %}
+    <h1>Do you want to delete the train?</h1>
+    <b><input type="submit" value="Yes" /><a href=""></a></b>
+</form>
+{% endblock %}
