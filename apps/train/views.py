@@ -1,76 +1,54 @@
-
 from django.views.generic.list import ListView
-from django.shortcuts import redirect, render
-from django.http import HttpResponseForbidden
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import PermissionDenied
 from .forms import TrainForm
 from .models import Train
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-# Create your views here.
-
-
-def create_train(request):
-
-    if request.method == "POST":
-        form = TrainForm(request.POST)
-        if form.is_valid():
-            form.instance.set_user(request.user)  # link the user to the train
-            form.instance.calc_tonnage()  # set the tonnage
-            form.save()
-            return redirect("/")
-        else:
-            return render(request, "train/create_train.html", {"form": form})
-    elif request.method == "GET":
-        form = TrainForm()
-        return render(request, "train/create_train.html", {"form": form})
+from django.views.generic.list import ListView
+from django.views.generic import UpdateView, CreateView, DeleteView
 
 
-class ReadTrain(LoginRequiredMixin, ListView):
+class TrainCreateView(LoginRequiredMixin, CreateView):
+    model = Train
+    form_class = TrainForm
+    template_name = "train/create_train.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        form.instance.set_user(self.request.user)  # link the user to the train
+        form.instance.calc_tonnage()  # set the tonnage
+        return super().form_valid(form)
+
+
+class TrainListView(LoginRequiredMixin, ListView):
     model = Train
     template_name = "train/read_train.html"
     context_object_name = "trains"
     paginate_by = 5
 
     def get_queryset(self):
-        return Train.objects.filter(user=self.request.user).order_by("-date")
+        return Train.objects.filter(user=self.request.user)
 
 
-def update_train(request, pk):
-    if User.is_authenticated:
+class TrainUpdateView(LoginRequiredMixin, UpdateView):
+    model = Train
+    template_name = "train/update_train.html"
+    fields = ["exercise", "weight", "repetitions"]
+    success_url = "/"
 
-        train = Train.objects.get(pk=pk)
-        verifie_if_user_is_owner = train.user == request.user
-
-        if verifie_if_user_is_owner:
-            if request.method == "POST":
-                form = TrainForm(request.POST, instance=train)
-                if form.is_valid():
-                    form.instance.calc_tonnage()  # set the tonnage
-                    form.save()
-                    return redirect("/")
-                else:
-                    return render(request, "train/update_train.html", {"form": form})
-            elif request.method == "GET":
-                form = TrainForm(instance=train)
-                return render(request, "train/update_train.html", {"form": form})
-        else:
-            return redirect("/")
-    else:
-        return redirect("/")
+    def get_object(self, queryset=None):
+        obj = super(TrainUpdateView, self).get_object()
+        if obj.user != self.request.user:
+            raise PermissionDenied()
+        return obj
 
 
-def delete_train(request, pk):
-    if User.is_authenticated:
-        if Train.objects.filter(pk=pk).exists(): # check if the train exists
-            if request.user == Train.objects.get(pk=pk).user: 
-                train = Train.objects.get(pk=pk) # get the train
-                return train.user == request.user # verifie if the user is the owner of the train
-            raise PermissionDenied("Permission denied")
-        else:
-            raise ObjectDoesNotExist("The train does not exist")
-    raise PermissionDenied("Permission denied")
+class TrainDeleteView(LoginRequiredMixin, DeleteView):
+    model = Train
+    template_name = "train/read_train.html"
+    success_url = "/"
 
-
-
+    def get_object(self, queryset=None):
+        obj = super(TrainDeleteView, self).get_object()
+        if obj.user != self.request.user:
+            raise PermissionDenied()
+        return obj

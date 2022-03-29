@@ -28,4 +28,4 @@ class Train(models.Model):
         self.user = user
 
     def __str__(self):
-        return f"{self.exercise} - {self.weight} - {self.date.strftime('%d/%m/%Y')}"
+        return f"{self.exercise} - {self.weight} - {self.date}"

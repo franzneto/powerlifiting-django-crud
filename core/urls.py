@@ -15,15 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.train.views import *
+from apps.train.views import (
+    TrainListView,
+    TrainCreateView,
+    TrainUpdateView,
+    TrainDeleteView,
+)
 
 app_name = "train"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("train/create/", create_train, name="create_train"),
-    path("", ReadTrain.as_view(), name="read_train"),
-    path("train/delete/<int:pk>/", delete_train, name="delete_train"),
-    path("train/update/<int:pk>/", update_train, name="update_train"),
+    path("train/create/", TrainCreateView.as_view(), name="create_train"),
+    path("", TrainListView.as_view(), name="read_train"),
+    path("train/delete/<int:pk>/", TrainDeleteView.as_view(), name="delete_train"),
+    path("train/update/<int:pk>/", TrainUpdateView.as_view(), name="update_train"),
 ]
