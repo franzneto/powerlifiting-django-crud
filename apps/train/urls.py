@@ -4,7 +4,6 @@ from .views import (
     TrainListView,
     TrainUpdateView,
     TrainDeleteView,
-    TrainIndexTemplateView,
 )
 
 app_name = "train"

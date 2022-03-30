@@ -1,13 +1,5 @@
-#ASSERT
+# ASSERT
 # GET
-
-
-def test_home_page(client):
-    """
-    Test that the home page loads.
-    """
-    response = client.get("/")
-    assert response.status_code == 200 or response.status_code == 302
 
 
 def test_login_page(db, client):
@@ -34,12 +26,12 @@ def test_logout_page(db, client):
     assert response.status_code == 302
 
 
-def test_train_create_page(db, client):
+def test_train_create_page_without_user_logged(db, client):
     """
     Test that the train create page loads.
     """
     response = client.get("/train/create/")
-    assert response.status_code == 200
+    assert response.status_code == 302
 
 
 def test_train_delete_without_user_logged(db, client):
