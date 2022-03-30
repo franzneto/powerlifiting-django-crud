@@ -12,22 +12,22 @@
 <header>
         <nav class="navbar navbar-expand navbar-dark bg-dark mb-3">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'read_train' %}">Powerlifting Crud</a>
+                <a class="navbar-brand" href="">Powerlifting Crud</a>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item px-3">
-                        <a class="btn btn-success" href="{% url 'create_train' %}">Add Train</a>
+                        <a class="btn btn-success" href="">Add Train</a>
                     </li>
                     <br>
                     <li class="nav-item">
-                        <a class="btn btn-danger" href="{% url 'account_logout' %}">Logout</a>
+                        <a class="btn btn-danger" href="">Logout</a>
                     </li>
                     {% else %}
                     <li class="nav-item px-3">
-                        <a class="btn btn-success" href="{% url 'account_login' %}">Login</a>
+                        <a class="btn btn-success" href="">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-success" href="{% url 'account_signup' %}">Register</a>
+                        <a class="btn btn-success" href="">Register</a>
                     </li>
                     {% endif %}
                 </ul>
